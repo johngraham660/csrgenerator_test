@@ -4,7 +4,7 @@ pipeline {
     }
     environment {
         APPLICATION_NAME = 'python-nginx'
-        GIT_REPO="https://oegit.bskyb.com/jgr78/csrgenerator.git"
+        GIT_REPO="https://github.com/johngraham660/csrgenerator_test.git"
         GIT_BRANCH="master"
         STAGE_TAG = "promoteToQA"
         DEV_PROJECT = "dev"
