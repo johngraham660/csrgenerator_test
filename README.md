@@ -15,7 +15,7 @@ In order to allow privileged containers we need to modify the SCC to allow user 
 `oc adm policy add-scc-to-user anyuid -z default`
 
 ### Create the application
-`oc new-app https://gitlab.com/virtua-galaxy/openshift/csrgenerator.git
+`oc new-app https://gitlab.com/virtua-galaxy/openshift/csrgenerator.git`
 
 ### Disable SSL verification of the Gitlab Repo
 The Gitlab certs are self signed certificates and Openshift will not verify them as being secure, this will cause the build to fail. In order to work around this issue for the time being I am disabling the Git SSL verification by defining an environment variable in the BuildConfig.
@@ -25,10 +25,10 @@ The Gitlab certs are self signed certificates and Openshift will not verify them
 `oc start-build bc/csrgenerator`
 ### 
 ### Expose the route
-`oc expose service csrgenerator --hostname=csrgenerator.apps.ocp.bskyb.vm --port=80`
+`oc expose service csrgenerator --hostname=csrgenerator.apps.ocp.virtua.vm --port=80`
 
 If there is no wildcard DNS for your Openshift cluster you will need to create a new A record for the application service in DNS. 
 
 If you are just testing, add an entry to your /etc/hosts file pointing to the load balancer FE interface. The name must match the exposed route so that Openshift can direct the traffic via the appropriate service.
 
-`10.137.0.166 csrgenerator.apps.ocp.bskyb.vm`
+`10.137.0.166 csrgenerator.apps.ocp.virtua.vm`
