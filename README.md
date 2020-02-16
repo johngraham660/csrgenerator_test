@@ -15,10 +15,10 @@ In order to allow privileged containers we need to modify the SCC to allow user 
 `oc adm policy add-scc-to-user anyuid -z default`
 
 ### Create the application
-`oc new-app https://oegit.bskyb.com/jgr78/csrgenerator.git`
+`oc new-app https://gitlab.com/virtua-galaxy/openshift/csrgenerator.git
 
 ### Disable SSL verification of the Gitlab Repo
-The Gitlab certs are self signed BSKYB certificates and Openshift will not verify them as being secure, this will cause the build to fail. Even putting the BSKYB Root CA on the openshift nodes will not fix the issue. In order to work around this issue for the time being I am disabling the Git SSL verification by defining an environment variable in the BuildConfig.
+The Gitlab certs are self signed certificates and Openshift will not verify them as being secure, this will cause the build to fail. In order to work around this issue for the time being I am disabling the Git SSL verification by defining an environment variable in the BuildConfig.
 `oc env bc/csrgenerator GIT_SSL_NO_VERIFY=true`
 
 ### Issue a new build (First one will fail)
