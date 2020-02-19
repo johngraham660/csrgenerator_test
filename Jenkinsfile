@@ -22,6 +22,7 @@ pipeline {
         stage ("Install Dependencies") {
             steps {
                 sh """
+                python -m site --user-base
                 pip install --user virtualenv
                 virtualenv --no-site-packages .
                 source bin/activate
