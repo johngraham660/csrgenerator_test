@@ -36,7 +36,7 @@ pipeline {
             steps {
                 sh '''
                 source bin/activate
-                nosetests app --with-xunit
+                python -m "nose" -e tests.py
                 deactivate
                 '''
                 junit "nosetests.xml"
