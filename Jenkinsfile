@@ -24,10 +24,10 @@ pipeline {
                 sh '''
                 python -m site --user-base
                 PATH=$PATH=/home/jenkins/.local/bin
-                pip install --user virtualenv
+                python -m pip install --user virtualenv
                 /home/jenkins/.local/bin/virtualenv --system-site-packages .
                 source bin/activate
-                pip install -r requirements.txt
+                python -m pip install -r requirements.txt
                 deactivate
                 '''
             }
