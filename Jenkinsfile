@@ -21,7 +21,7 @@ pipeline {
         }
         stage ("Install Dependencies") {
             steps {
-                sh """
+                sh '''
                 python -m site --user-base
                 PATH=$PATH=/home/jenkins/.local/bin
                 pip install --user virtualenv
@@ -29,7 +29,7 @@ pipeline {
                 source bin/activate
                 pip install -r requirements.txt
                 deactivate
-                """
+                '''
             }
         }
         stage('Run Tests') {
