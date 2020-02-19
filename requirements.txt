@@ -13,4 +13,3 @@ nose
 pyOpenSSL
 pycodestyle
 pyflakes
-wsgiref
