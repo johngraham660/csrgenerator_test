@@ -25,7 +25,7 @@ pipeline {
                 python -m site --user-base
                 PATH=$PATH=/home/jenkins/.local/bin
                 pip install --user virtualenv
-                virtualenv --no-site-packages .
+                /home/jenkins/.local/bin/virtualenv --no-site-packages .
                 source bin/activate
                 pip install -r app/requirements.pip
                 deactivate
