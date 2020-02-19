@@ -27,7 +27,7 @@ pipeline {
                 pip install --user virtualenv
                 /home/jenkins/.local/bin/virtualenv --system-site-packages .
                 source bin/activate
-                pip install -r requirements.pip
+                pip install -r requirements.txt
                 deactivate
                 """
             }
