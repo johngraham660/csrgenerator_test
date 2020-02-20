@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import unittest
 
 from nose.tools import raises, assert_equal
