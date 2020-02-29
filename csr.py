@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf8 -*-
 
 """
@@ -22,8 +22,13 @@
 
 """
 
-import OpenSSL.crypto as crypt
-
+#import OpenSSL.crypto as crypt
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives import hashes
+from cryptography import x509
+from cryptography.x509.oid import NameOID
 
 class CsrGenerator(object):
     DIGEST = "sha256"
@@ -63,11 +68,22 @@ class CsrGenerator(object):
         Generates a public/private RSA keypair of length bits.
         """
 
-        if bits not in self.SUPPORTED_KEYSIZES:
+        if bits not in self.SUPPORTED_KEYSIZES: 
             raise KeyError("Only 2048 and 4096-bit RSA keys are supported")
 
-        key = crypt.PKey()
-        key.generate_key(crypt.TYPE_RSA, bits)
+        key = rsa.generate_private_key(
+            public_exponent=65537,
+            key_size=bits,
+            backend=default_backend()
+        )
+        
+        # Write the key out to disk for safe keeping
+        with open("keys/key.pem") as f:
+            f.write(key.private_bytes(
+                encoding=serialization.Encoding.PEM,
+                format=serialization.PrivateFormat.TraditionalOpenSSL,
+                encryption_algorithm=serialization.BestAvailableEncryption(b"passphrase"),
+            ))
 
         return key
 
@@ -77,12 +93,33 @@ class CsrGenerator(object):
 
     @property
     def csr(self):
-        request = crypt.X509Req()
-        subject = request.get_subject()
+        #request = crypt.X509Req()
+        #subject = request.get_subject()
 
-        for (k, v) in self.csr_info.items():
-            setattr(subject, k, v)
+        #for (k, v) in self.csr_info.items():
+        #    setattr(subject, k, v)
 
-        request.set_pubkey(self.keypair)
-        request.sign(self.keypair, self.DIGEST)
-        return crypt.dump_certificate_request(crypt.FILETYPE_PEM, request)
+        #request.set_pubkey(self.keypair)
+        #request.sign(self.keypair, self.DIGEST)
+        #return crypt.dump_certificate_request(crypt.FILETYPE_PEM, request)
+
+        request = x509.CertificateSigningRequestBuilder.subject_name(x509.Name([
+            x509.NameAttribute(NameOID.COUNTRY_NAME, u"US"),
+            x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, u"Cal"),
+            x509.NameAttribute(NameOID.LOCALITY_NAME, u""),
+            x509.NameAttribute(NameOID.ORGANIZATION_NAME, u""),
+            x509.NameAttribute(NameOID.COMMON_NAME, u""),
+        ])).add_extension(
+            x509.SubjectAlternativeName([
+                x509.DNSName(u""),
+                x509.DNSName(u""),
+                x509.DNSName(u""),
+            ]),
+            critical=False,
+        ).sign(key, hashes.SHA256(), default_backend())
+
+        with open("keys/key.pem", "wb") as f:
+            f.write(request.public_bytes(serialization.Encoding.PEM))
+
+    
+
