@@ -8,7 +8,7 @@ RUN apk --update add --no-cache gcc python3 python3-dev musl-dev libffi-dev open
 # Adding requirements.txt file here so we can cache the pip install layer as well
 ADD ./requirements.txt /app/
 
-RUN python3 -m pip install -r requirements.txt && \
+RUN python3 -m pip3 install -r requirements.txt && \
     apk del gcc git python3-dev musl-dev libffi-dev openssl-dev
 
 # Now add everything into the container
