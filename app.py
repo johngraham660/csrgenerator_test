@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 
@@ -24,20 +24,6 @@ def generate_csr():
     csr = CsrGenerator(request.form)
     response = '\n'.join([csr.csr, csr.private_key])
     return Response(response, mimetype='text/plain')
-
-
-@app.route('/gen_spark_request')
-def generate_spark_request():
-    
-    # Intention here is to get the CSR and submit a request into Spark.
-    # We would then return the Spark REQ number to the user
-    # NOTE: None of this is working - DO NOT USE
-    
-    apikey = 'insert-api-key'
-    response = 'get spark response'
-
-    return render_template('spark_req_number.html')
-
 
 
 if __name__ == '__main__':
