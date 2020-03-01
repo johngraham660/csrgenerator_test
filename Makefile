@@ -1,5 +1,5 @@
 requirements:
-	pip install -r requirements.txt
+	pip3 install -r requirements.txt
 
 check:
 	flake8 --max-line-length=120 *.py
